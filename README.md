@@ -23,7 +23,6 @@ Requirements
 $ python scan.py -c key.json -v -url kingskillz.ru
 {'positives': 16, 'response_code': 1, 'total': 70, 'resource': u'kingskillz.ru'}
 {'domain_siblings': [], 'BitDefender domain info': 67, 'undetected_referrer_samples': 2, 'whois_timestamp': 1480012951.01238, 'detected_downloaded_samples': 6, 'response_code': 1, 'Malwarebytes hpHosts info': 47, 'subdomains': [u'blog.kingskillz.ru', u'test.kingskillz.ru', u'wp.kingskillz.ru', u'www.kingskillz.ru'], 'Websense ThreatSeeker category': u'bot networks', 'undetected_downloaded_samples': 8, 'resolutions': 6, 'verbose_msg': u'Domain found in dataset', 'Opera domain info': 66, 'detected_urls': 57, 'categories': [u'bot networks']}
-
 ```
 
 ### Scanning an URL to VirusTotal and Save Output:
@@ -31,7 +30,6 @@ $ python scan.py -c key.json -v -url kingskillz.ru
 $ python scan.py -c key.json -v -url kingskillz.ru
 {'positives': 16, 'response_code': 1, 'total': 70, 'resource': u'kingskillz.ru'}
 {'domain_siblings': [], 'BitDefender domain info': 67, 'undetected_referrer_samples': 2, 'whois_timestamp': 1480012951.01238, 'detected_downloaded_samples': 6, 'response_code': 1, 'Malwarebytes hpHosts info': 47, 'subdomains': [u'blog.kingskillz.ru', u'test.kingskillz.ru', u'wp.kingskillz.ru', u'www.kingskillz.ru'], 'Websense ThreatSeeker category': u'bot networks', 'undetected_downloaded_samples': 8, 'resolutions': 6, 'verbose_msg': u'Domain found in dataset', 'Opera domain info': 66, 'detected_urls': 57, 'categories': [u'bot networks']}
-
 ```
 
 ### Scanning an URL to Malware.com:
