@@ -75,7 +75,7 @@ $ python scan.py -c key.json -v -m -s -url ihaveaproblem.info -o -d
 [DEBUG] saving ihaveaproblem.info_safe_browsing.csv
 ```
 
-![slack example](https://github.com/dikien/dikien/Threat-Intelligence/blob/master/resources/slack_2.png)
+![slack example](https://github.com/dikien/Threat-Intelligence/blob/master/resources/slack_2.png)
 ### Scanning an URL to VirusTotal, Malwares.com and Google Safe Browsing and Sending output to Slack Channel:
 ```
 $ python scan.py -c key.json -v -m -s -slack -url ihaveaproblem.info 
