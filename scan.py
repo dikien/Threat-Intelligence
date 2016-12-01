@@ -89,8 +89,8 @@ def request_to_vt_url_scan(url):
 
                 if RAW is not False:
                     return response.json()
-
                 return result
+
             elif response.json()['response_code'] != 1:
                 result = {}
                 data = response.json()
@@ -99,7 +99,10 @@ def request_to_vt_url_scan(url):
                 return result
 
         except Exception as e:
-            return {'resource' : URL, 'error' : str(e)}
+            if response.status_code == 204:
+                return {'resource': url, 'error': "Daily quota was exceed"}
+            else:
+                return {'resource' : url, 'error' : str(e)}
 
 
 # Retrieving domain reports
@@ -130,12 +133,10 @@ def request_to_vt_domain_report(url):
                 for k in data.keys():
                     if (k.find("sample") != -1) or (k.find("info") != -1) or (k.find("resolutions") != -1) or (k.find("pcap") != -1) or (k.find("detected_urls") != -1):
                         result[str(k)] = len(data[k])
-                    else:
+                    elif (k.find("whois_timestamp") == -1) and (k.find("whois") == -1):
                         result[str(k)] = data[k]
                 result['resource'] = URL
                 result['response_code'] = data['response_code']
-                del result['whois_timestamp']
-                del result['whois']
 
                 if RAW is not False:
                     return response.json()
@@ -148,7 +149,10 @@ def request_to_vt_domain_report(url):
                 return response.json()
 
         except Exception as e:
-            return {'resource': URL, 'error' : str(e)}
+            if response.status_code == 204:
+                return {'resource': url, 'error': "Daily quota was exceed"}
+            else:
+                return {'resource' : url, 'error' : str(e)}
 
 
 # Retrieving IP address reports
@@ -171,14 +175,11 @@ def request_to_vt_ip_report(ip):
             if (response.status_code == 200) and (response.json()['response_code'] == 1):
                 result = {}
                 data = response.json()
-                result['resource'] = IP
-                result['response_code'] = data['response_code']
-                result['as_owner'] = data['as_owner']
-                result['country'] = data['country']
-                result['detected_downloaded_samples'] = len(data['detected_downloaded_samples'])
-                result['detected_referrer_samples'] = len(data['detected_referrer_samples'])
-                result['detected_urls'] = len(data['detected_urls'])
-                result['detected_communicating_samples'] = len(data['detected_communicating_samples'])
+                for k in data.keys():
+                    if ((k.find("sample") != -1) or (k.find("url") != -1)) and (k.find("undetected") == -1):
+                        result[str(k)] = len(data[k])
+                    elif k.find("undetected") == -1:
+                        result[str(k)] = data[k]
 
                 if RAW is not False:
                     return response.json()
@@ -193,7 +194,10 @@ def request_to_vt_ip_report(ip):
                 return result
 
         except Exception as e:
-            return {'resource' : IP, 'error' : str(e)}
+            if response.status_code == 204:
+                return {'resource': IP, 'error': "Daily quota was exceed"}
+            else:
+                return {'resource' : IP, 'error' : str(e)}
 
 
 # URL Analysis Request API
@@ -438,7 +442,7 @@ if (VIRUSTOTAL == True) and (CONFIG['virustotal'] != ""):
             save_to_json('{0}_vt_ip_report.json'.format(IP), response_to_vt_ip_report)
             save_to_csv('{0}_vt_ip_report.csv'.format(IP), response_to_vt_ip_report)
 
-else:
+elif VIRUSTOTAL is True:
     print "Enter your VIRUSTOTAL API Key on key.json"
 
 if (MALWARES == True) and (CONFIG['malwares'] != ""):
@@ -464,7 +468,7 @@ if (MALWARES == True) and (CONFIG['malwares'] != ""):
         if OUTPUT is not False:
             save_to_json('{0}_malware_ip_report.json'.format(IP), response_to_malwares_ip)
             save_to_csv('{0}_malware_ip_report.csv'.format(IP), response_to_malwares_ip)
-else:
+elif MALWARES == True:
     print "Enter your MALWARES.COM API Key on key.json"
 
 if (SAFEBROWSING == True) and (CONFIG['Safe Browsing'] != ""):
@@ -483,5 +487,5 @@ if (SAFEBROWSING == True) and (CONFIG['Safe Browsing'] != ""):
 
         except Exception as e:
             dprint("[SAFEBROWSING] No Matched Result")
-else:
+elif SAFEBROWSING == True:
     print "Enter your SAFEBROWSING API Key on key.json"
